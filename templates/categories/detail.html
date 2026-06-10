@@ -1,0 +1,81 @@
+(-{% extends "base.html" %}
+
+{% block title %}{{ categorie.nom }} - Drive Alimentaire{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-tags"></i> {{ categorie.nom }}</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'modifier_categorie' categorie.id %}" class="btn btn-warning btn-sm">
+            <i class="fas fa-edit"></i> Modifier
+        </a>
+        <a href="{% url 'supprimer_categorie' categorie.id %}" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i> Supprimer
+        </a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Informations</h5>
+    </div>
+    <div class="card-body">
+        <p class="mb-2"><strong>Nom :</strong> {{ categorie.nom }}</p>
+        <p class="mb-0"><strong>Descriptif :</strong> {{ categorie.descriptif|default:"Non renseigné" }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-box"></i> Produits ({{ produits.count }})</h5>
+    </div>
+    {% if produits %}
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Marque</th>
+                        <th>Prix</th>
+                        <th>Date péremption</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produit in produits %}
+                        <tr>
+                            <td>{{ produit.nom }}</td>
+                            <td>{{ produit.marque }}</td>
+                            <td>{{ produit.prix }}€</td>
+                            <td>{{ produit.date_peremption|date:"d/m/Y"|default:"Non renseigné" }}</td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{% url 'voir_produit' produit.id %}" class="btn btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="card-body text-center text-muted">
+            <i class="fas fa-inbox"></i> Aucun produit dans cette catégorie
+        </div>
+    {% endif %}
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'liste_categories' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+</div>
+{% endblock %}
+

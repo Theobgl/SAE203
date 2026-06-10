@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Drive Alimentaire{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .card {
+            box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.075);
+            border: none;
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .btn-group-sm {
+            gap: 0.25rem;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'accueil' %}">
+                <i class="fas fa-shopping-cart"></i> Drive Alimentaire
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accueil' %}"><i class="fas fa-home"></i> Accueil</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navCategories" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-tags"></i> Catégories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navCategories">
+                            <li><a class="dropdown-item" href="{% url 'liste_categories' %}">Liste des catégories</a></li>
+                            <li><a class="dropdown-item" href="{% url 'creer_categorie' %}">Créer une catégorie</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navProducts" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-box"></i> Produits
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navProducts">
+                            <li><a class="dropdown-item" href="{% url 'liste_produits' %}">Liste des produits</a></li>
+                            <li><a class="dropdown-item" href="{% url 'creer_produit' %}">Créer un produit</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'importer_produits' %}"><i class="fas fa-upload"></i> Importer CSV</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navClients" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-users"></i> Clients
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navClients">
+                            <li><a class="dropdown-item" href="{% url 'liste_clients' %}">Liste des clients</a></li>
+                            <li><a class="dropdown-item" href="{% url 'creer_client' %}">Créer un client</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navOrders" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-receipt"></i> Commandes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navOrders">
+                            <li><a class="dropdown-item" href="{% url 'liste_commandes' %}">Liste des commandes</a></li>
+                            <li><a class="dropdown-item" href="{% url 'creer_commande' %}">Créer une commande</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container my-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}times-circle{% elif message.tags == 'warning' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0"><strong>Drive Alimentaire</strong> &copy; 2026</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0">Gestion complète de votre Drive alimentaire</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

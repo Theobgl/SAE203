@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}{{ client.nom_complet }} - Drive Alimentaire{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-users"></i> {{ client.nom_complet }}</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'modifier_client' client.id %}" class="btn btn-warning btn-sm">
+            <i class="fas fa-edit"></i> Modifier
+        </a>
+        <a href="{% url 'supprimer_client' client.id %}" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i> Supprimer
+        </a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Informations du client</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Numéro :</dt>
+            <dd class="col-sm-9"><strong>#{{ client.numero_client }}</strong></dd>
+
+            <dt class="col-sm-3">Nom :</dt>
+            <dd class="col-sm-9">{{ client.nom }}</dd>
+
+            <dt class="col-sm-3">Prénom :</dt>
+            <dd class="col-sm-9">{{ client.prenom }}</dd>
+
+            <dt class="col-sm-3">Adresse :</dt>
+            <dd class="col-sm-9">{{ client.adresse }}</dd>
+
+            <dt class="col-sm-3">Date inscription :</dt>
+            <dd class="col-sm-9">{{ client.date_inscription|date:"d/m/Y" }}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-receipt"></i> Commandes ({{ commandes.count }})</h5>
+    </div>
+    {% if commandes %}
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>N° Commande</th>
+                        <th>Date</th>
+                        <th>Nombre articles</th>
+                        <th>Total</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                        <tr>
+                            <td><strong>#{{ commande.numero_commande }}</strong></td>
+                            <td>{{ commande.date_commande|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                {% with lignes_count=commande.lignecommande_set.count %}
+                                    {{ lignes_count }} article{{ lignes_count|pluralize }}
+                                {% endwith %}
+                            </td>
+                            <td><strong>{{ commande.total }}€</strong></td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{% url 'voir_commande' commande.id %}" class="btn btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="card-body text-center text-muted">
+            <i class="fas fa-inbox"></i> Aucune commande
+        </div>
+    {% endif %}
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'liste_clients' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+</div>
+{% endblock %}
+

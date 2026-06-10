@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ produit.nom }} - Drive Alimentaire{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-box"></i> {{ produit.nom }}</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-warning btn-sm">
+            <i class="fas fa-edit"></i> Modifier
+        </a>
+        <a href="{% url 'supprimer_produit' produit.id %}" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i> Supprimer
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Informations</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Nom :</dt>
+                    <dd class="col-sm-9"><strong>{{ produit.nom }}</strong></dd>
+
+                    <dt class="col-sm-3">Marque :</dt>
+                    <dd class="col-sm-9">{{ produit.marque|default:"Non renseigné" }}</dd>
+
+                    <dt class="col-sm-3">Prix :</dt>
+                    <dd class="col-sm-9"><strong class="text-success text-lg">{{ produit.prix }}€</strong></dd>
+
+                    <dt class="col-sm-3">Catégorie :</dt>
+                    <dd class="col-sm-9">
+                        <a href="{% url 'voir_categorie' produit.categorie.id %}">
+                            <span class="badge bg-secondary">{{ produit.categorie.nom }}</span>
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-3">Date péremption :</dt>
+                    <dd class="col-sm-9">{{ produit.date_peremption|date:"d/m/Y"|default:"Non renseignée" }}</dd>
+
+                    <dt class="col-sm-3">Créé le :</dt>
+                    <dd class="col-sm-9">{{ produit.date_creation|date:"d/m/Y H:i" }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        {% if produit.photo %}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Photo</h5>
+                </div>
+                <div class="card-body">
+                    <img src="{{ produit.photo.url }}" alt="{{ produit.nom }}" class="img-fluid">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'liste_produits' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+</div>
+{% endblock %}
+

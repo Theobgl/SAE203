@@ -1,0 +1,194 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                    MODE HYBRIDE ACTIVÉ ✅                          ║
+║                 MongoDB + SQLite (Fallback)                         ║
+╚════════════════════════════════════════════════════════════════════╝
+
+📊 CONFIGURATION AUTOMATIQUE
+
+L'application détecte automatiquement:
+
+✅ MongoDB disponible?  → Utilise MongoDB
+❌ MongoDB indisponible? → Bascule à SQLite
+
+═══════════════════════════════════════════════════════════════════════
+
+🚀 DÉMARRAGE SIMPLE
+
+1. Initialiser
+   python initialize_hybrid.py
+
+2. Lancer
+   python manage.py runserver
+
+3. Accéder
+   http://localhost:8000
+
+═══════════════════════════════════════════════════════════════════════
+
+📦 FICHIERS CRÉÉS/MODIFIÉS
+
+Nouveaux fichiers:
+  ✅ config/db_config.py           Infos DB
+  ✅ app/models_sqlite.py          Modèles SQLite
+  ✅ app/models_adapter.py         Adapter automatique
+  ✅ initialize_hybrid.py           Initialisation hybride
+  ✅ HYBRID_MODE.md                 Documentation complète
+  ✅ QUICK_START_HYBRID.txt         Guide rapide
+
+Fichiers modifiés:
+  ✅ config/settings.py             Configuration hybride
+
+═══════════════════════════════════════════════════════════════════════
+
+🎯 SCENARIOS
+
+Scénario 1: Développement rapide (SANS MongoDB)
+──────────────────────────────────────────────
+$ python initialize_hybrid.py
+$ python manage.py runserver
+
+✅ SQLite activé automatiquement
+✅ Pas besoin de MongoDB!
+
+───────────────────────────────────────────────
+
+Scénario 2: Production (AVEC MongoDB)
+──────────────────────────────────────────────
+$ net start MongoDB
+$ python initialize_hybrid.py
+$ python manage.py runserver
+
+✅ MongoDB détecté automatiquement
+✅ Performance optimale
+
+Scénario 3: Basculer entre les deux
+──────────────────────────────────────────────
+# MongoDB vers SQLite
+$ net stop MongoDB
+$ python initialize_hybrid.py
+
+# SQLite vers MongoDB
+$ net start MongoDB
+$ python initialize_hybrid.py
+
+✅ Basculement automatique!
+
+═══════════════════════════════════════════════════════════════════════
+
+𝅘𝅥𝅮 TECHNIQUEMENT COMMENT ÇA MARCHE?
+
+1. config/settings.py
+   ├─ Essaye MongoDB
+   ├─ Si connecté: MONGODB_ENABLED = True
+   └─ Si erreur: Bascule SQLite
+
+2. app/models_adapter.py
+   ├─ Importe app/models.py (MongoDB)
+   ├─ OU app/models_sqlite.py (SQLite)
+   └─ Automatiquement selon MONGODB_ENABLED
+
+3. initialize_hybrid.py
+   ├─ Détecte la DB active
+   ├─ Crée migrations (SQLite)
+   └─ Initialise les données
+
+═══════════════════════════════════════════════════════════════════════
+
+📊 BASES SUPPORTÉES
+
+MongoDB:
+  • Type: NoSQL Document
+  • Host: localhost:27017
+  • DB: drive_alimentaire
+  • Collections: categories, produits, clients, commandes, lignes_commande
+  • Prérequis: Serveur MongoDB
+
+SQLite:
+  • Type: SQL Relationnel
+  • Fichier: db.sqlite3
+  • Tables: Same structure as MongoDB
+  • Prérequis: Aucun! (intégré Django)
+
+═══════════════════════════════════════════════════════════════════════
+
+✨ AVANTAGES
+
+✅ Flexibilité totale
+   • MongoDB pour production
+   • SQLite pour développement
+
+✅ Pas de configuration
+   • Détection automatique
+   • Un seul point d'entrée
+
+✅ Compatibilité
+   • Même interface pour les deux
+   • Modèles adaptés automatiquement
+
+✅ Facilité de migration
+   • Passer de l'une à l'autre simplement
+   • Zéro downtime
+
+═══════════════════════════════════════════════════════════════════════
+
+🔄 MIGRATION DE DONNÉES
+
+Si vous changez de BD:
+
+1. Anciennes données dans MongoDB/SQLite
+2. Exporter (backup)
+3. Importer dans la nouvelle BD
+4. OU: Recommencer from scratch
+
+Données par défaut fournies pour les deux!
+
+═══════════════════════════════════════════════════════════════════════
+
+💡 CONSEILS
+
+Développement:
+  → Utilisez SQLite
+  → Plus simple, aucune installation
+
+Production:
+  → Utilisez MongoDB
+  → Plus performant, scalable
+
+Testing:
+  → Basculez entre les deux!
+  → Testez votre app sur les deux
+
+═══════════════════════════════════════════════════════════════════════
+
+📚 RESSOURCES
+
+Documentation:
+  • HYBRID_MODE.md          - Guide complet
+  • QUICK_START_HYBRID.txt  - Démarrage rapide
+  • README_COMPLET.md       - Architecture générale
+
+Fichiers de configuration:
+  • config/settings.py      - Sélection DB
+  • config/db_config.py     - Infos DB
+
+═══════════════════════════════════════════════════════════════════════
+
+🎉 VOUS ÊTES PRÊT!
+
+Commande complète pour démarrer:
+
+  python initialize_hybrid.py && python manage.py runserver
+
+Puis ouvrez: http://localhost:8000
+
+═══════════════════════════════════════════════════════════════════════
+
+Questions?
+  → Voir HYBRID_MODE.md
+  → Voir QUICK_START_HYBRID.txt
+  → Voir config/db_config.py
+
+═══════════════════════════════════════════════════════════════════════
+
+Bon développement! 🚀
+

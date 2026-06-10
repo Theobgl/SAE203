@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Importer des produits - Drive Alimentaire{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2><i class="fas fa-upload"></i> Importer des produits</h2>
+    </div>
+</div>
+
+{% if succes %}
+    <div class="card mb-4 border-success">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-check-circle"></i> Résumé de l'import</h5>
+        </div>
+        <div class="card-body">
+            <p class="mb-2">
+                <strong>{{ nb_importes }} produit(s) importé(s) avec succès</strong>
+            </p>
+            {% if erreurs %}
+                <div class="alert alert-warning mt-3">
+                    <strong>Erreurs rencontrées ({{ erreurs|length }}) :</strong>
+                    <ul class="mb-0 mt-2">
+                        {% for erreur in erreurs %}
+                            <li><small>{{ erreur }}</small></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-footer bg-light">
+            <a href="{% url 'liste_produits' %}" class="btn btn-success">
+                <i class="fas fa-list"></i> Voir les produits
+            </a>
+            <a href="{% url 'importer_produits' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-redo"></i> Importer à nouveau
+            </a>
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Format du fichier CSV</h5>
+                </div>
+                <div class="card-body">
+                    <p>Le fichier doit contenir les colonnes suivantes (séparées par des points-virgules) :</p>
+                    <div class="alert alert-info">
+                        <code>nom;prix;marque;date_peremption;categorie</code>
+                    </div>
+                    <p>Exemple :</p>
+                    <div class="alert alert-light">
+                        <code>
+                            Coca Cola 1L;2.50;Coca Cola;2026-12-31;Boissons<br>
+                            Jus Orange;3.20;Tropicana;2026-10-15;Boissons<br>
+                            Pommes Gala kg;4.50;Bio;2026-06-25;Fruits
+                        </code>
+                    </div>
+                    <p class="text-muted">
+                        <strong>Notes :</strong>
+                        <ul>
+                            <li>Les catégories sont créées automatiquement si elles n'existent pas</li>
+                            <li>La date doit être au format YYYY-MM-DD</li>
+                            <li>Les prix doivent utiliser le point comme séparateur décimal (ex: 2.50)</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Sélectionner le fichier</h5>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> Importer
+                        </button>
+                        <a href="{% url 'liste_produits' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+

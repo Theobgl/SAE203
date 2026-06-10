@@ -1,0 +1,187 @@
+# 🚀 DÉMARRAGE RAPIDE - MODE HYBRIDE
+
+## ⚡ UNE SEULE COMMANDE POUR DÉMARRER
+
+```bash
+python initialize_hybrid.py && python manage.py runserver
+```
+
+Puis ouvrez: **http://localhost:8000** 🎉
+
+---
+
+## 🤔 QUI FONCTIONNE AVEC QUOI?
+
+### ✅ MongoDB + Django
+```bash
+# 1. Démarrer MongoDB
+net start MongoDB
+
+# 2. Initialiser
+python initialize_hybrid.py
+
+# 3. Lancer
+python manage.py runserver
+
+# ✅ Résultat: MongoDB utilisé
+```
+
+### ✅ SQLite + Django (SANS MONGODB)
+```bash
+# 1. Pas besoin de MongoDB!
+
+# 2. Initialiser
+python initialize_hybrid.py
+
+# 3. Lancer
+python manage.py runserver
+
+# ✅ Résultat: SQLite utilisé automatiquement
+```
+
+### ✅ Les deux fonctionnent!
+L'app détecte automatiquement et bascule! 🔄
+
+---
+
+## 📊 QU'EST-CE QUE VOUS RECEVEZ?
+
+### Mode MongoDB
+```
+✅ MongoDB connected successfully!
+📊 Base de Données: MongoDB
+   Statut: ✅ Connecté
+   Host: localhost:27017
+   Base: drive_alimentaire
+```
+
+### Mode SQLite
+```
+⚠️  MongoDB indisponible
+💡 Utilisation de SQLite pour développement...
+✅ SQLite activé comme fallback!
+📊 Base de Données: SQLite
+   Statut: ✅ Tableau de bord local
+   Chemin: C:\path\to\db.sqlite3
+```
+
+---
+
+## 🎯 SCÉNARIOS COURANTS
+
+### Scénario 1: Je veux tester RAPIDEMENT
+```bash
+cd C:\Users\theob\PycharmProjects\SAE203
+python initialize_hybrid.py
+python manage.py runserver
+```
+✅ Fonctionne avec SQLite (pas besoin MongoDB!)
+
+### Scénario 2: J'ai MongoDB d'instalé
+```bash
+net start MongoDB
+python initialize_hybrid.py
+python manage.py runserver
+```
+✅ Utilise MongoDB automatiquement
+
+### Scénario 3: Je passe de MongoDB à SQLite
+```bash
+# Arrêtez MongoDB
+net stop MongoDB
+
+# Relancez l'app
+python initialize_hybrid.py
+python manage.py runserver
+```
+✅ Bascule automatiquement à SQLite
+
+### Scénario 4: Je passe de SQLite à MongoDB
+```bash
+# Démarrez MongoDB
+net start MongoDB
+
+# Relancez l'app
+python initialize_hybrid.py
+python manage.py runserver
+```
+✅ Bascule automatiquement à MongoDB
+
+---
+
+## 💾 OÙ SONT LES DONNÉES?
+
+### MongoDB
+- Les données restent dans MongoDB (localhost:27017)
+- Base: `drive_alimentaire`
+- Vérifier: `mongosh` → `db.drive_alimentaire.categories.find()`
+
+### SQLite
+- Fichier local: `db.sqlite3` (racine du projet)
+- Aucune configuration supplémentaire
+- Vérifier: Fichier de ~50KB créé automatiquement
+
+---
+
+## 🔄 COMMENT ÇA MARCHE?
+
+```
+python manage.py runserver
+    ↓
+Django démarre
+    ↓
+Cek: MongoDB disponible?
+    ├─ OUI:  Utilise MongoDB
+    │        (performance, scalabilité)
+    │
+    └─ NON:  Utilise SQLite
+             (développement facile)
+    ↓
+Application prête ✅
+http://localhost:8000
+```
+
+---
+
+## 📚 FICHIERS CRÉÉS POUR LE MODE HYBRIDE
+
+- ✅ `config/db_config.py` - Infos DB
+- ✅ `app/models_sqlite.py` - Modèles Django
+- ✅ `app/models_adapter.py` - Adapter
+- ✅ `initialize_hybrid.py` - Initialisation hybride
+- ✅ `HYBRID_MODE.md` - Documentation complète
+- ✅ `config/settings.py` - Configuration améliorée
+
+---
+
+## ✨ RÉSUMÉ
+
+| Besoin | Commande |
+|--------|----------|
+| **Démarrer rapidement** | `python initialize_hybrid.py && python manage.py runserver` |
+| **Avec MongoDB** | `net start MongoDB` puis la commande ci-dessus |
+| **Avec SQLite seul** | Directement la première commande |
+| **Vérifier la DB** | L'app affiche le statut au démarrage |
+
+---
+
+## 🎉 C'EST TOUT!
+
+```bash
+# Copier-coller dans PowerShell:
+cd C:\Users\theob\PycharmProjects\SAE203; python initialize_hybrid.py; python manage.py runserver
+```
+
+L'app:
+1. ✅ Détecte la DB disponible
+2. ✅ Initialise les données
+3. ✅ Crée les migrations (SQLite)
+4. ✅ Démarre le serveur
+5. ✅ Ouvre sur http://localhost:8000
+
+Enjoy! 🚀
+
+---
+
+**Documentation complète:** Voir `HYBRID_MODE.md`
+

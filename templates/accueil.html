@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - Drive Alimentaire{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Bienvenue dans votre Drive Alimentaire</h1>
+            <p class="lead">Gérez facilement vos catégories, produits, clients et commandes.</p>
+            <hr class="my-4">
+            <div class="btn-group" role="group">
+                <a class="btn btn-primary btn-lg" href="{% url 'initialize_data' %}" onclick="return confirm('Initialiser les données de base?');">
+                    <i class="fas fa-database"></i> Initialiser les données
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-tags"></i> Catégories</h5>
+                <p class="stat-number">{{ nb_categories }}</p>
+                <a href="{% url 'liste_categories' %}" class="btn btn-sm btn-outline-primary">Voir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-box"></i> Produits</h5>
+                <p class="stat-number">{{ nb_produits }}</p>
+                <a href="{% url 'liste_produits' %}" class="btn btn-sm btn-outline-primary">Voir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-users"></i> Clients</h5>
+                <p class="stat-number">{{ nb_clients }}</p>
+                <a href="{% url 'liste_clients' %}" class="btn btn-sm btn-outline-primary">Voir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-receipt"></i> Commandes</h5>
+                <p class="stat-number">{{ nb_commandes }}</p>
+                <a href="{% url 'liste_commandes' %}" class="btn btn-sm btn-outline-primary">Voir</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-star"></i> Actions rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="btn-group-vertical w-100" role="group">
+                    <a href="{% url 'creer_categorie' %}" class="btn btn-outline-secondary text-start"><i class="fas fa-plus"></i> Créer une catégorie</a>
+                    <a href="{% url 'creer_produit' %}" class="btn btn-outline-secondary text-start"><i class="fas fa-plus"></i> Créer un produit</a>
+                    <a href="{% url 'creer_client' %}" class="btn btn-outline-secondary text-start"><i class="fas fa-plus"></i> Créer un client</a>
+                    <a href="{% url 'creer_commande' %}" class="btn btn-outline-secondary text-start"><i class="fas fa-plus"></i> Créer une commande</a>
+                    <a href="{% url 'importer_produits' %}" class="btn btn-outline-secondary text-start"><i class="fas fa-upload"></i> Importer CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

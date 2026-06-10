@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Créer une commande - Drive Alimentaire{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleLigne(produitId) {
+        var element = document.getElementById('ligne-' + produitId);
+        if (element) {
+            if (element.style.display === 'none') {
+                element.style.display = '';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2><i class="fas fa-receipt"></i> Créer une commande</h2>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Étape 1 : Sélectionner un client</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="id_client" class="form-label">Client *</label>
+                <select name="client" id="id_client" class="form-select" required>
+                    <option value="">-- Sélectionner un client --</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client.numero_client }} - {{ client.nom_complet }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Étape 2 : Ajouter des produits</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for produit in produits %}
+                    <div class="col-md-6 mb-3">
+                        <button type="button" class="btn btn-outline-secondary w-100 text-start" onclick="toggleLigne({{ produit.id }})">
+                            <i class="fas fa-plus"></i> {{ produit.nom }}
+                        </button>
+                        <div id="ligne-{{ produit.id }}" style="display: none; margin-top: 10px;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="mb-2">
+                                        <strong>{{ produit.nom }}</strong><br>
+                                        <small class="text-muted">{{ produit.marque }} - {{ produit.categorie.nom }}</small>
+                                    </p>
+                                    <p class="mb-3">
+                                        <strong class="text-success">Prix: {{ produit.prix }}€</strong>
+                                    </p>
+                                    <div class="form-group">
+                                        <label for="quantite-{{ produit.id }}" class="form-label">Quantité</label>
+                                        <input type="number" name="quantite" id="quantite-{{ produit.id }}" min="0" value="0" class="form-control">
+                                    </div>
+                                    <input type="hidden" name="produit_id" value="{{ produit.id }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer bg-light">
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-check"></i> Créer la commande
+        </button>
+        <a href="{% url 'liste_commandes' %}" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Annuler
+        </a>
+    </div>
+</form>
+{% endblock %}
+
